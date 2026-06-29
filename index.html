@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Adaptive & Neurodivergent Learning AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #050816;
+      --card-bg: #0f172a;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.2);
+      --text-main: #e5e7eb;
+      --text-soft: #9ca3af;
+      --danger: #fb7185;
+      --focus: #a855f7;
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      background: radial-gradient(circle at top, #0f172a 0, #020617 45%, #000000 100%);
+      color: var(--text-main);
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 16px 64px;
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0 32px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+    }
+
+    .logo {
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      color: var(--accent);
+    }
+
+    nav {
+      display: flex;
+      gap: 16px;
+      font-size: 0.9rem;
+    }
+
+    nav a {
+      color: var(--text-soft);
+      text-decoration: none;
+      padding: 6px 10px;
+      border-radius: 999px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    nav a:hover {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr);
+      gap: 32px;
+      align-items: center;
+      padding-top: 32px;
+    }
+
+    @media (max-width: 840px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .hero-title {
+      font-size: clamp(2.1rem, 3vw, 2.6rem);
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .hero-highlight {
+      background: radial-gradient(circle at top left, var(--accent-soft), transparent 55%);
+      padding: 2px 6px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+
+    .hero-subtitle {
+      font-size: 0.99rem;
+      color: var(--text-soft);
+      max-width: 520px;
+      margin-bottom: 20px;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .tag {
+      font-size: 0.8rem;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: var(--text-soft);
+      backdrop-filter: blur(6px);
+    }
+
+    .tag.accent {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--focus));
+      color: #0b1120;
+      font-weight: 600;
+      padding: 9px 18px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 12px 30px rgba(56, 189, 248, 0.35);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-soft);
+      font-weight: 500;
+      padding: 9px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .btn-secondary span {
+      color: var(--accent);
+    }
+
+    .hero-visual {
+      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.18), rgba(15, 23, 42, 0.92));
+      border-radius: 24px;
+      padding: 18px 18px 16px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.7);
+    }
+
+    .hero-visual-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      font-size: 0.75rem;
+      color: var(--text-soft);
+    }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+    }
+
+    .pill.accent {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .load-bar {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      overflow: hidden;
+      margin-bottom: 16px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+    }
+
+    .load-bar-inner {
+      height: 100%;
+      width: 68%;
+      background: linear-gradient(90deg, var(--danger), var(--accent));
+    }
+
+    .visual-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 16px;
+    }
+
+    .visual-card {
+      background: rgba(15, 23, 42, 0.85);
+      border-radius: 18px;
+      padding: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      font-size: 0.78rem;
+    }
+
+    .visual-card h3 {
+      font-size: 0.8rem;
+      margin: 0 0 8px;
+      color: var(--accent);
+    }
+
+    .visual-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .chip {
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: var(--text-soft);
+      font-size: 0.72rem;
+    }
+
+    .chip.alert {
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    .chip.ok {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .visual-list {
+      margin: 0;
+      padding-left: 16px;
+      color: var(--text-soft);
+    }
+
+    .section {
+      margin-top: 40px;
+    }
+
+    .section-label {
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-size: 0.7rem;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      margin-bottom: 6px;
+    }
+
+    .section-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      max-width: 620px;
+      margin-bottom: 18px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .pill-row .pill {
+      font-size: 0.78rem;
+    }
+
+    .columns-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    @media (max-width: 840px) {
+      .columns-3 {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .feature-card {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 14px 14px 16px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      font-size: 0.86rem;
+    }
+
+    .feature-label {
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-soft);
+      margin-bottom: 3px;
+    }
+
+    .feature-title {
+      font-size: 0.98rem;
+      margin-bottom: 6px;
+      color: var(--accent);
+    }
+
+    .feature-text {
+      font-size: 0.83rem;
+      color: var(--text-soft);
+      line-height: 1.4;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(148, 163, 184, 0.3);
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div>
+        <div class="logo">COGNIFY</div>
+        <div style="font-size: 0.75rem; color: var(--text-soft); margin-top: 4px;">
+          Adaptive & Neurodivergent Learning
+        </div>
+      </div>
+      <nav>
+        <a href="#vision">Vision</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#profiles">Learner profiles</a>
+      </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div>
+        <h1 class="hero-title">
+          Standard education software assumes a <span class="hero-highlight">standard brain</span>.
+        </h1>
+        <p class="hero-subtitle">
+          Cognify is an AI-first learning layer that adapts to your cognitive load, attention span,
+          dyslexia profile, and learning pace—so the classroom finally bends to the learner, not the other way around.
+        </p>
+
+        <div class="hero-tags">
+          <span class="tag accent">ADHD‑aware pacing</span>
+          <span class="tag">Dyslexia‑friendly reading</span>
+          <span class="tag">Dynamic cognitive load</span>
+          <span class="tag">Neurodiversity‑first UX</span>
+        </div>
+
+        <div class="hero-actions">
+          <button class="btn-primary">
+            Start an adaptive session
+            <span>→</span>
+          </button>
+          <button class="btn-secondary">
+            Watch 2‑minute concept demo <span>beta</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- HERO VISUAL / MOCK PANEL -->
+      <div class="hero-visual">
+        <div class="hero-visual-header">
+          <div class="pill">Learner: Neurodivergent mode</div>
+          <div class="pill accent">Real‑time adaptation: ON</div>
+        </div>
+
+        <div class="load-bar">
+          <div class="load-bar-inner"></div>
+        </div>
+
+        <div style="font-size: 0.75rem; color: var(--text-soft); margin-bottom: 10px;">
+          Cognitive load is rising. Pausing new concepts, switching to micro‑tasks and visual cues.
+        </div>
+
+        <div class="visual-grid">
+          <div class="visual-card">
+            <h3>Attention + Pace engine</h3>
+            <p style="margin: 0; color: var(--text-soft);">
+              • Detects focus drops<br>
+              • Shrinks tasks into micro‑steps<br>
+              • Adds breaks before overload hits
+            </p>
+            <div class="visual-chip-row">
+              <span class="chip alert">Overwhelm risk: High</span>
+              <span class="chip ok">Switched to 3‑min sprint</span>
+            </div>
+          </div>
+
+          <div class="visual-card">
+            <h3>Profile snapshot</h3>
+            <ul class="visual-list">
+              <li>ADHD: time‑blind, needs short timers</li>
+              <li>Dyslexia: prefers audio + large fonts</li>
+              <li>Best window: 9:30–11:00 AM</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VISION -->
+    <section id="vision" class="section">
+      <div class="section-label">Why this matters</div>
+      <div class="section-title">Education was built for one brain type. Yours is different.</div>
+      <p class="section-subtitle">
+        Most learning platforms push the same pace, same layout, and same instructions to every student,
+        quietly assuming a neurotypical attention span and processing style.
+      </p>
+
+      <div class="pill-row">
+        <div class="pill">Standardised content → varied brains</div>
+        <div class="pill">One‑size‑fits‑all → one‑size‑fits‑none</div>
+        <div class="pill">We flip the default to “neurodivergent‑first”</div>
+      </div>
+
+      <div class="columns-3">
+        <div class="feature-card">
+          <div class="feature-label">Problem</div>
+          <div class="feature-title">Invisible cognitive overload</div>
+          <p class="feature-text">
+            Students with ADHD or high anxiety often hit overload long before the system notices. The app keeps pushing content; the learner silently drops out.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-label">Problem</div>
+          <div class="feature-title">Dyslexia‑unfriendly interfaces</div>
+          <p class="feature-text">
+            Dense text, low contrast, and tiny fonts make reading a battle. Conventional platforms rarely adapt typography, spacing, or modality to dyslexic users.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-label">Shift</div>
+          <div class="feature-title">AI that shapes itself to you</div>
+          <p class="feature-text">
+            Instead of telling neurodivergent learners to “try harder,” Cognify rewrites how content is chunked, timed, voiced, and displayed based on how their brain actually works.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how-it-works" class="section">
+      <div class="section-label">Inside the system</div>
+      <div class="section-title">Four adaptive layers for real learners, not ideal ones.</div>
+      <p class="section-subtitle">
+        Under the hood, Cognify combines attention signals, interaction patterns, and self‑reported data to continuously tune the experience: what you see, how long you see it, and when you get to rest.
+      </p>
+
+      <div class="columns-3">
+        <div class="feature-card">
+          <div class="feature-label">Layer 01</div>
+          <div class="feature-title">Cognitive load controller</div>
+          <p class="feature-text">
+            Tracks micro‑signals like rapid tab‑switching, slowed responses, and error spikes to estimate current load, then shrinks, pauses, or reorders tasks before burnout hits.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-label">Layer 02</div>
+          <div class="feature-title">ADHD‑aware pacing</div>
+          <p class="feature-text">
+            Uses short timers, visible progress bars, and micro‑deadlines instead of long, vague assignments. Sessions auto‑split into sprints with built‑in breaks and rewards.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-label">Layer 03</div>
+          <div class="feature-title">Dyslexia‑friendly reading</div>
+          <p class="feature-text">
+            Toggles to high‑contrast themes, larger letterspacing, and text‑to‑speech by default for dyslexic profiles, transforming dense paragraphs into guided, multimodal chunks.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LEARNER PROFILES -->
+    <section id="profiles" class="section">
+      <div class="section-label">Learner profiles</div>
+      <div class="section-title">One engine, many brains.</div>
+      <p class="section-subtitle">
+        Every learner builds a profile over time. Cognify doesn’t label you; it listens and adapts, so your “ideal way to learn” becomes the default, not the exception.
+      </p>
+
+      <div class="columns-3">
+        <div class="feature-card">
+          <div class="feature-label">Profile A</div>
+          <div class="feature-title">ADHD sprint learner</div>
+          <p class="feature-text">
+            Short, high‑focus bursts with strong visual cues. Tasks arrive as checklists, not essays. The system auto‑adds timers, breaks, and micro‑rewards to keep momentum.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-label">Profile B</div>
+          <div class="feature-title">Dyslexic audio‑first learner</div>
+          <p class="feature-text">
+            Lessons start in audio or video, with optional text overlays. When text appears, it is spacious, high‑contrast, and always paired with narration and highlight tracking.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-label">Profile C</div>
+          <div class="feature-title">Slow‑pace deep thinker</div>
+          <p class="feature-text">
+            The engine lengthens deadlines, reduces notifications, and turns fast quizzes into reflective prompts, matching the pace of learners who need extra time to process.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div>Built for neurodivergent minds first, not as an afterthought.</div>
+      <div>Concept draft · Ashaz Ali · Cognify Lab</div>
+    </footer>
+  </div>
+</body>
+</html>
