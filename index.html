@@ -548,6 +548,34 @@
         </div>
       </div>
     </section>
+    <script>
+  async function startAdaptiveSession(profileId = "adhd_sprint") {
+    const res = await fetch("http://localhost:5000/api/session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ profile_id: profileId })
+    });
+    const data = await res.json();
+    console.log("Session:", data);
+    // TODO: update your hero cards / text on the page with data from backend
+  }
+
+  async function sendSignals() {
+    const res = await fetch("http://localhost:5000/api/adapt", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        focus_drops: 3,
+        tab_switches: 5,
+        error_rate: 0.2,
+        minutes_in_session: 18
+      })
+    });
+    const data = await res.json();
+    console.log("Adaptation suggestions:", data);
+    // TODO: show suggestions inside the UI (e.g., in the hero visual card)
+  }
+</script>
 
     <footer>
       <div>Built for neurodivergent minds first, not as an afterthought.</div>
