@@ -553,5 +553,47 @@
       <div>Concept draft · Ashaz Ali · Cognify Lab</div>
     </footer>
   </div>
+  <script>
+  async function startAdaptiveSession(profileId = "adhd_sprint") {
+    try {
+      const res = await fetch("http://localhost:5000/api/session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ profile_id: profileId })
+      });
+      const data = await res.json();
+      console.log("Session:", data);
+      alert("Adaptive session started for: " + data.profile_label);
+    } catch (err) {
+      console.error(err);
+      alert("Error talking to backend. Is it running?");
+    }
+  }
+
+  async function sendSignals() {
+    try {
+      const res = await fetch("http://localhost:5000/api/adapt", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          focus_drops: 3,
+          tab_switches: 5,
+          error_rate: 0.2,
+          minutes_in_session: 18
+        })
+      });
+      const data = await res.json();
+      console.log("Adaptation:", data);
+      alert(
+        "Load: " + data.load_level +
+        " (" + data.load_score + ").\n" +
+        "First suggestion: " + data.suggestions[0]
+      );
+    } catch (err) {
+      console.error(err);
+      alert("Error talking to backend. Is it running?");
+    }
+  }
+</script>
 </body>
 </html>
