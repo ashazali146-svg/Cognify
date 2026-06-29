@@ -561,37 +561,81 @@
     </footer>
   </div>
   <script>
+  const API_BASE = "http://localhost:5000";
+
   async function startAdaptiveSession(profileId = "adhd_sprint") {
-    const res = await fetch("http://localhost:5000/api/session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ profile_id: profileId })
-    });
-    const data = await res.json();
-    console.log("Session:", data);
-    // TODO: update your hero cards / text on the page with data from backend
+    try {
+      const res = await fetch(`${API_BASE}/api/session`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ profile_id: profileId })
+      });
+
+      if (!res.ok) {
+        throw new Error("Backend returned status " + res.status);
+      }
+
+      const data = await res.json();
+      console.log("Session:", data);
+
+      // Update hero text and profile area
+      document.getElementById("hero-status").textContent =
+        `Session started for ${data.profile_label} – ` +
+        `${data.duration_minutes} min with a ${data.break_minutes} min break.`;
+
+      document.getElementById("profile-snapshot").innerHTML = `
+        <li>Profile: ${data.profile_label}</li>
+        <li>Task style: ${data.task_style}</li>
+        <li>Timers enabled: ${data.timers_enabled ? "yes" : "no"}</li>
+        <li>Micro-rewards: ${data.micro_rewards ? "yes" : "no"}</li>
+      `;
+
+      alert("Adaptive session started for: " + data.profile_label);
+    } catch (err) {
+      console.error(err);
+      alert("Error talking to backend. Is it running on http://localhost:5000 ?");
+    }
   }
 
   async function sendSignals() {
-    const res = await fetch("http://localhost:5000/api/adapt", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        focus_drops: 3,
-        tab_switches: 5,
-        error_rate: 0.2,
-        minutes_in_session: 18
-      })
-    });
-    const data = await res.json();
-    console.log("Adaptation suggestions:", data);
-    // TODO: show suggestions inside the UI (e.g., in the hero visual card)
-  }function startAdaptiveSession() {
-    alert("Start adaptive session button clicked!");
-  }
+    try {
+      const res = await fetch(`${API_BASE}/api/adapt`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          focus_drops: 3,
+          tab_switches: 5,
+          error_rate: 0.2,
+          minutes_in_session: 18
+        })
+      });
 
-  function sendSignals() {
-    alert("Concept demo button clicked!");
+      if (!res.ok) {
+        throw new Error("Backend returned status " + res.status);
+      }
+
+      const data = await res.json();
+      console.log("Adaptation:", data);
+
+      // Update bar + chips + hero text
+      const bar = document.getElementById("load-bar-inner");
+      bar.style.width = `${data.load_score}%`;
+
+      const chipLoad = document.getElementById("chip-load");
+      chipLoad.textContent = `Cognitive load: ${data.load_level} (${data.load_score})`;
+
+      document.getElementById("hero-status").textContent =
+        data.suggestions[0];
+
+      alert(
+        "Cognitive load: " + data.load_level +
+        " (" + data.load_score + ")\n" +
+        "Suggestion: " + data.suggestions[0]
+      );
+    } catch (err) {
+      console.error(err);
+      alert("Error talking to backend. Is it running on http://localhost:5000 ?");
+    }
   }
 </script>
 </body>
