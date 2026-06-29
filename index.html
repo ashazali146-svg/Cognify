@@ -351,43 +351,88 @@
       text-decoration: none;
     }
 
-    /* Session page styles */
-    .session {
+    /* Quiz panel */
+    .quiz-panel {
       margin-top: 40px;
-      display: none; /* hidden by default */
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 18px 18px 20px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      display: none; /* hidden until button click */
     }
 
-    .session-header {
+    .quiz-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      gap: 12px;
+      margin-bottom: 12px;
     }
 
-    .session-grid {
+    .quiz-category-select {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: #020617;
+      color: var(--text-soft);
+      font-size: 0.8rem;
+    }
+
+    .quiz-question {
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+    }
+
+    .quiz-options {
       display: grid;
-      grid-template-columns: 2fr 1.5fr;
-      gap: 20px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
     }
 
-    @media (max-width: 840px) {
-      .session-grid {
+    @media (max-width: 640px) {
+      .quiz-options {
         grid-template-columns: minmax(0, 1fr);
       }
     }
 
-    .session-card {
-      background: var(--card-bg);
-      border-radius: 18px;
-      padding: 16px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      font-size: 0.86rem;
+    .quiz-option-btn {
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: #020617;
+      color: var(--text-soft);
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
     }
 
-    .session-steps {
-      list-style: decimal;
-      padding-left: 20px;
+    .quiz-option-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .quiz-option-btn.correct {
+      border-color: #22c55e;
+      color: #22c55e;
+      background: rgba(22, 163, 74, 0.12);
+    }
+
+    .quiz-option-btn.wrong {
+      border-color: var(--danger);
+      color: var(--danger);
+      background: rgba(248, 113, 113, 0.12);
+    }
+
+    .quiz-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
       color: var(--text-soft);
+      margin-top: 6px;
     }
 
     .badge {
@@ -402,300 +447,12 @@
       border-color: var(--accent);
       color: var(--accent);
     }
-  </style>
-</head>
-<body>
-  <div class="page">
-    <header>
-      <div>
-        <div class="logo">COGNIFY</div>
-        <div style="font-size: 0.75rem; color: var(--text-soft); margin-top: 4px;">
-          Adaptive & Neurodivergent Learning
-        </div>
-      </div>
-      <nav>
-        <a href="#vision">Vision</a>
-        <a href="#how-it-works">How it works</a>
-        <a href="#profiles">Learner profiles</a>
-      </nav>
-    </header>
 
-    <!-- HERO (landing page) -->
-    <section class="hero" id="hero-section">
-      <div>
-        <h1 class="hero-title">
-          Standard education software assumes a <span class="hero-highlight">standard brain</span>.
-        </h1>
-        <p class="hero-subtitle">
-          Cognify is an AI-first learning layer that adapts to your cognitive load, attention span,
-          dyslexia profile, and learning pace—so the classroom finally bends to the learner, not the other way around.
-        </p>
-
-        <div class="hero-tags">
-          <span class="tag accent">ADHD‑aware pacing</span>
-          <span class="tag">Dyslexia‑friendly reading</span>
-          <span class="tag">Dynamic cognitive load</span>
-          <span class="tag">Neurodiversity‑first UX</span>
-        </div>
-
-        <div class="hero-actions">
-          <button class="btn-primary" onclick="openSession('adhd_sprint')">
-            Start an adaptive session
-            <span>→</span>
-          </button>
-          <button class="btn-secondary" onclick="openSession('dyslexic_audio')">
-            Watch 2‑minute concept demo <span>beta</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- HERO VISUAL -->
-      <div class="hero-visual">
-        <div class="hero-visual-header">
-          <div class="pill">Learner: Neurodivergent mode</div>
-          <div class="pill accent">Real‑time adaptation: SIMULATED</div>
-        </div>
-
-        <div class="load-bar">
-          <div class="load-bar-inner" id="load-bar-inner"></div>
-        </div>
-
-        <div id="hero-status" style="font-size: 0.75rem; color: var(--text-soft); margin-bottom: 10px;">
-          Cognitive load is rising. Pausing new concepts, switching to micro‑tasks and visual cues.
-        </div>
-
-        <div class="visual-grid">
-          <div class="visual-card">
-            <h3>Attention + Pace engine</h3>
-            <p style="margin: 0; color: var(--text-soft);" id="pace-engine-text">
-              • Detects focus drops<br>
-              • Shrinks tasks into micro‑steps<br>
-              • Adds breaks before overload hits
-            </p>
-            <div class="visual-chip-row">
-              <span class="chip alert" id="chip-load">Overwhelm risk: High</span>
-              <span class="chip ok" id="chip-mode">Switched to 3‑min sprint</span>
-            </div>
-          </div>
-
-          <div class="visual-card">
-            <h3>Profile snapshot</h3>
-            <ul class="visual-list" id="profile-snapshot">
-              <li>ADHD: time‑blind, needs short timers</li>
-              <li>Dyslexia: prefers audio + large fonts</li>
-              <li>Best window: 9:30–11:00 AM</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SESSION PAGE (shown after clicking button) -->
-    <section class="session" id="session-section">
-      <div class="session-header">
-        <div>
-          <div class="section-label">Adaptive session</div>
-          <div class="section-title" id="session-title">
-            ADHD sprint learner · Focus sprint
-          </div>
-          <p class="section-subtitle" id="session-subtitle">
-            Cognify has generated an adaptive session based on your neurodivergent profile,
-            pacing your tasks and breaks to keep cognitive load in the safe zone.
-          </p>
-        </div>
-        <div>
-          <span class="badge accent" id="session-badge">Session length: 25 min · Break: 5 min</span>
-        </div>
-      </div>
-
-      <div class="session-grid">
-        <div class="session-card">
-          <h3>Session steps</h3>
-          <ol class="session-steps" id="session-steps">
-            <li>Warm‑up: 2–3 very easy tasks.</li>
-            <li>Core focus sprint with short timers.</li>
-            <li>Built‑in micro‑break with breathing / stretch.</li>
-            <li>Reflection: quick recap before closing the session.</li>
-          </ol>
-        </div>
-
-        <div class="session-card">
-          <h3>Live adaptation (simulated)</h3>
-          <p style="color: var(--text-soft); margin-bottom: 10px;" id="session-adapt-text">
-            Cognitive load is currently medium. Instructions are shortened, and you can trigger a 2‑minute pause at any time.
-          </p>
-          <button class="btn-secondary" onclick="simulateLoadChange()">
-            Simulate cognitive‑load change
-          </button>
-          <p style="font-size: 0.8rem; color: var(--text-soft); margin-top: 10px;">
-            Each click adjusts the load bar and adaptation summary to show how the AI would react to changing focus or errors.
-          </p>
-        </div>
-      </div>
-
-      <div style="margin-top: 24px;">
-        <button class="btn-secondary" onclick="backToHero()">
-          ← Back to concept overview
-        </button>
-      </div>
-    </section>
-
-    <!-- OTHER SECTIONS (stay same) -->
-    <section id="vision" class="section">
-      <div class="section-label">Why this matters</div>
-      <div class="section-title">Education was built for one brain type. Yours is different.</div>
-      <p class="section-subtitle">
-        Most learning platforms push the same pace, same layout, and same instructions to every student,
-        quietly assuming a neurotypical attention span and processing style.
-      </p>
-
-      <div class="pill-row">
-        <div class="pill">Standardised content → varied brains</div>
-        <div class="pill">One‑size‑fits‑all → one‑size‑fits‑none</div>
-        <div class="pill">We flip the default to “neurodivergent‑first”</div>
-      </div>
-
-      <div class="columns-3">
-        <div class="feature-card">
-          <div class="feature-label">Problem</div>
-          <div class="feature-title">Invisible cognitive overload</div>
-          <p class="feature-text">
-            Students with ADHD or high anxiety often hit overload long before the system notices. The app keeps pushing content; the learner silently drops out.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-label">Problem</div>
-          <div class="feature-title">Dyslexia‑unfriendly interfaces</div>
-          <p class="feature-text">
-            Dense text, low contrast, and tiny fonts make reading a battle. Conventional platforms rarely adapt typography, spacing, or modality to dyslexic users.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-label">Shift</div>
-          <div class="feature-title">AI that shapes itself to you</div>
-          <p class="feature-text">
-            Instead of telling neurodivergent learners to “try harder,” Cognify rewrites how content is chunked, timed, voiced, and displayed based on how their brain actually works.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section id="profiles" class="section">
-      <div class="section-label">Learner profiles</div>
-      <div class="section-title">One engine, many brains.</div>
-      <p class="section-subtitle">
-        Every learner builds a profile over time. Cognify doesn’t label you; it listens and adapts, so your “ideal way to learn” becomes the default, not the exception.
-      </p>
-
-      <div class="columns-3">
-        <div class="feature-card">
-          <div class="feature-label">Profile A</div>
-          <div class="feature-title">ADHD sprint learner</div>
-          <p class="feature-text">
-            Short, high‑focus bursts with strong visual cues. Tasks arrive as checklists, not essays. The system auto‑adds timers, breaks, and micro‑rewards to keep momentum.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-label">Profile B</div>
-          <div class="feature-title">Dyslexic audio‑first learner</div>
-          <p class="feature-text">
-            Lessons start in audio or video, with optional text overlays. When text appears, it is spacious, high‑contrast, and always paired with narration and highlight tracking.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-label">Profile C</div>
-          <div class="feature-title">Slow‑pace deep thinker</div>
-          <p class="feature-text">
-            The engine lengthens deadlines, reduces notifications, and turns fast quizzes into reflective prompts, matching the pace of learners who need extra time to process.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <footer>
-      <div>Built for neurodivergent minds first, not as an afterthought.</div>
-      <div>Concept draft · Ashaz Ali · Cognify Lab</div>
-    </footer>
-  </div>
-
-  <!-- Page switching + simulated adaptation -->
-  <script>
-    const profileConfigs = {
-      adhd_sprint: {
-        title: "ADHD sprint learner · Focus sprint",
-        subtitle: "Cognify has generated an adaptive session with short sprints, visible timers, and micro‑breaks to keep cognitive load stable for ADHD learners.",
-        badge: "Session length: 25 min · Break: 5 min",
-        steps: [
-          "Warm‑up: 2–3 very easy checklist tasks.",
-          "Core focus sprint with 5‑minute timers.",
-          "Micro‑break: breathing / stretch and water.",
-          "Reflection: quick recap before closing the session."
-        ]
-      },
-      dyslexic_audio: {
-        title: "Dyslexic audio‑first learner · Guided reading",
-        subtitle: "Cognify has generated an adaptive session that starts in audio, uses high‑contrast text, and guides reading in small chunks for dyslexic learners.",
-        badge: "Session length: 30 min · Break: 10 min",
-        steps: [
-          "Audio overview of the topic.",
-          "High‑contrast text with narration on key paragraphs.",
-          "Guided reading with highlight tracking.",
-          "Recap using audio + visual summary."
-        ]
-      }
-    };
-
-    function openSession(profileId) {
-      const config = profileConfigs[profileId] || profileConfigs.adhd_sprint;
-
-      // Fill session text
-      document.getElementById("session-title").textContent = config.title;
-      document.getElementById("session-subtitle").textContent = config.subtitle;
-      document.getElementById("session-badge").textContent = config.badge;
-
-      const stepsList = document.getElementById("session-steps");
-      stepsList.innerHTML = "";
-      config.steps.forEach(step => {
-        const li = document.createElement("li");
-        li.textContent = step;
-        stepsList.appendChild(li);
-      });
-
-      // Show session page, hide hero
-      document.getElementById("hero-section").style.display = "none";
-      document.getElementById("session-section").style.display = "block";
-
-      // Scroll to top of page so the session is visible
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function backToHero() {
-      document.getElementById("session-section").style.display = "none";
-      document.getElementById("hero-section").style.display = "grid";
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function simulateLoadChange() {
-      const loads = [
-        { score: 20, level: "low", text: "Load is low. Safe to introduce a new concept or combine two micro‑tasks." },
-        { score: 55, level: "medium", text: "Load is medium. Keep tasks short and add an optional 2‑minute pause." },
-        { score: 85, level: "high", text: "Load is high. Pause new content and switch to review or visual cues only." }
-      ];
-
-      const choice = loads[Math.floor(Math.random() * loads.length)];
-
-      const bar = document.getElementById("load-bar-inner");
-      bar.style.width = `${choice.score}%`;
-
-      const chipLoad = document.getElementById("chip-load");
-      chipLoad.textContent = `Cognitive load: ${choice.level} (${choice.score})`;
-
-      document.getElementById("session-adapt-text").textContent = choice.text;
-    }
-  </script>
-</body>
-</html>
+    .quiz-next-btn {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      background: transparent;
+      color: var(--text-soft);
+      font-size: 0.8rem;
+      cursor: 
