@@ -205,6 +205,7 @@
       height: 100%;
       width: 68%;
       background: linear-gradient(90deg, var(--danger), var(--accent));
+      transition: width 0.3s ease;
     }
 
     .visual-grid {
@@ -400,7 +401,7 @@
       <div class="hero-visual">
         <div class="hero-visual-header">
           <div class="pill">Learner: Neurodivergent mode</div>
-          <div class="pill.accent">Real‑time adaptation: ON</div>
+          <div class="pill accent">Real‑time adaptation: SIMULATED</div>
         </div>
 
         <div class="load-bar">
@@ -479,41 +480,6 @@
       </div>
     </section>
 
-    <!-- HOW IT WORKS -->
-    <section id="how-it-works" class="section">
-      <div class="section-label">Inside the system</div>
-      <div class="section-title">Four adaptive layers for real learners, not ideal ones.</div>
-      <p class="section-subtitle">
-        Under the hood, Cognify combines attention signals, interaction patterns, and self‑reported data to continuously tune the experience: what you see, how long you see it, and when you get to rest.
-      </p>
-
-      <div class="columns-3">
-        <div class="feature-card">
-          <div class="feature-label">Layer 01</div>
-          <div class="feature-title">Cognitive load controller</div>
-          <p class="feature-text">
-            Tracks micro‑signals like rapid tab‑switching, slowed responses, and error spikes to estimate current load, then shrinks, pauses, or reorders tasks before burnout hits.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-label">Layer 02</div>
-          <div class="feature-title">ADHD‑aware pacing</div>
-          <p class="feature-text">
-            Uses short timers, visible progress bars, and micro‑deadlines instead of long, vague assignments. Sessions auto‑split into sprints with built‑in breaks and rewards.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-label">Layer 03</div>
-          <div class="feature-title">Dyslexia‑friendly reading</div>
-          <p class="feature-text">
-            Toggles to high‑contrast themes, larger letterspacing, and text‑to‑speech by default for dyslexic profiles, transforming dense paragraphs into guided, multimodal chunks.
-          </p>
-        </div>
-      </div>
-    </section>
-
     <!-- LEARNER PROFILES -->
     <section id="profiles" class="section">
       <div class="section-label">Learner profiles</div>
@@ -555,81 +521,67 @@
     </footer>
   </div>
 
-  <!-- Final script: no “button is clicked” test -->
+  <!-- Simulated “backend” logic in pure JS -->
   <script>
-    const API_BASE = "http://localhost:5000";
-
-    async function startAdaptiveSession(profileId = "adhd_sprint") {
-      try {
-        const res = await fetch(`${API_BASE}/api/session`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ profile_id: profileId })
-        });
-
-        if (!res.ok) {
-          throw new Error("Backend returned status " + res.status);
-        }
-
-        const data = await res.json();
-        console.log("Session:", data);
-
-        document.getElementById("hero-status").textContent =
-          `Session started for ${data.profile_label} – ` +
-          `${data.duration_minutes} min with a ${data.break_minutes} min break.`;
-
-        document.getElementById("profile-snapshot").innerHTML = `
-          <li>Profile: ${data.profile_label}</li>
-          <li>Task style: ${data.task_style}</li>
-          <li>Timers enabled: ${data.timers_enabled ? "yes" : "no"}</li>
-          <li>Micro-rewards: ${data.micro_rewards ? "yes" : "no"}</li>
-        `;
-
-        alert("Adaptive session started for: " + data.profile_label);
-      } catch (err) {
-        console.error(err);
-        alert("Error talking to backend. Is it running on http://localhost:5000 ?");
+    const profiles = {
+      adhd_sprint: {
+        label: "ADHD sprint learner",
+        duration_minutes: 25,
+        break_minutes: 5,
+        task_style: "checklist, short sprints, strong visual cues",
+        timers_enabled: true,
+        micro_rewards: true
+      },
+      dyslexic_audio: {
+        label: "Dyslexic audio-first learner",
+        duration_minutes: 30,
+        break_minutes: 10,
+        task_style: "audio-first, high-contrast text, guided reading",
+        timers_enabled: false,
+        micro_rewards: true
       }
+    };
+
+    function startAdaptiveSession(profileId = "adhd_sprint") {
+      const profile = profiles[profileId] || profiles.adhd_sprint;
+
+      document.getElementById("hero-status").textContent =
+        `Session started for ${profile.label} – ` +
+        `${profile.duration_minutes} min with a ${profile.break_minutes} min break.`;
+
+      document.getElementById("profile-snapshot").innerHTML = `
+        <li>Profile: ${profile.label}</li>
+        <li>Task style: ${profile.task_style}</li>
+        <li>Timers enabled: ${profile.timers_enabled ? "yes" : "no"}</li>
+        <li>Micro-rewards: ${profile.micro_rewards ? "yes" : "no"}</li>
+      `;
+
+      alert("Adaptive session started for: " + profile.label);
     }
 
-    async function sendSignals() {
-      try {
-        const res = await fetch(`${API_BASE}/api/adapt`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            focus_drops: 3,
-            tab_switches: 5,
-            error_rate: 0.2,
-            minutes_in_session: 18
-          })
-        });
+    function sendSignals() {
+      // Simulate different cognitive load levels each click
+      const loads = [
+        { score: 20, level: "low", suggestion: "Safe to introduce a new concept." },
+        { score: 55, level: "medium", suggestion: "Keep difficulty but shorten instructions." },
+        { score: 85, level: "high", suggestion: "Pause new concepts; switch to review tasks." }
+      ];
 
-        if (!res.ok) {
-          throw new Error("Backend returned status " + res.status);
-        }
+      const choice = loads[Math.floor(Math.random() * loads.length)];
 
-        const data = await res.json();
-        console.log("Adaptation:", data);
+      const bar = document.getElementById("load-bar-inner");
+      bar.style.width = `${choice.score}%`;
 
-        const bar = document.getElementById("load-bar-inner");
-        bar.style.width = `${data.load_score}%`;
+      const chipLoad = document.getElementById("chip-load");
+      chipLoad.textContent = `Cognitive load: ${choice.level} (${choice.score})`;
 
-        const chipLoad = document.getElementById("chip-load");
-        chipLoad.textContent = `Cognitive load: ${data.load_level} (${data.load_score})`;
+      document.getElementById("hero-status").textContent = choice.suggestion;
 
-        document.getElementById("hero-status").textContent =
-          data.suggestions[0];
-
-        alert(
-          "Cognitive load: " + data.load_level +
-          " (" + data.load_score + ")\n" +
-          "Suggestion: " + data.suggestions[0]
-        );
-      } catch (err) {
-        console.error(err);
-        alert("Error talking to backend. Is it running on http://localhost:5000 ?");
-      }
+      alert(
+        "Cognitive load: " + choice.level +
+        " (" + choice.score + ")\n" +
+        "Suggestion: " + choice.suggestion
+      );
     }
   </script>
 </body>
