@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Cognify</title>
+  <title>Adaptive & Neurodivergent Learning AI</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root {
@@ -386,16 +386,11 @@
         </div>
 
         <div class="hero-actions">
-  <button class="btn-primary" onclick="startAdaptiveSession('adhd_sprint')">
-    Start an adaptive session
-    <span>→</span>
-  </button>
-
-  <button class="btn-secondary" onclick="sendSignals()">
-    Watch 2-minute concept demo <span>beta</span>
-  </button>
-</div>
-          <button class="btn-secondary">
+          <button class="btn-primary" onclick="startAdaptiveSession('adhd_sprint')">
+            Start an adaptive session
+            <span>→</span>
+          </button>
+          <button class="btn-secondary" onclick="sendSignals()">
             Watch 2‑minute concept demo <span>beta</span>
           </button>
         </div>
@@ -409,30 +404,30 @@
         </div>
 
         <div class="load-bar">
-          <div class="load-bar-inner"></div>
+          <div class="load-bar-inner" id="load-bar-inner"></div>
         </div>
 
-        <div style="font-size: 0.75rem; color: var(--text-soft); margin-bottom: 10px;">
+        <div id="hero-status" style="font-size: 0.75rem; color: var(--text-soft); margin-bottom: 10px;">
           Cognitive load is rising. Pausing new concepts, switching to micro‑tasks and visual cues.
         </div>
 
         <div class="visual-grid">
           <div class="visual-card">
             <h3>Attention + Pace engine</h3>
-            <p style="margin: 0; color: var(--text-soft);">
+            <p style="margin: 0; color: var(--text-soft);" id="pace-engine-text">
               • Detects focus drops<br>
               • Shrinks tasks into micro‑steps<br>
               • Adds breaks before overload hits
             </p>
             <div class="visual-chip-row">
-              <span class="chip alert">Overwhelm risk: High</span>
-              <span class="chip ok">Switched to 3‑min sprint</span>
+              <span class="chip alert" id="chip-load">Overwhelm risk: High</span>
+              <span class="chip.ok" id="chip-mode">Switched to 3‑min sprint</span>
             </div>
           </div>
 
           <div class="visual-card">
             <h3>Profile snapshot</h3>
-            <ul class="visual-list">
+            <ul class="visual-list" id="profile-snapshot">
               <li>ADHD: time‑blind, needs short timers</li>
               <li>Dyslexia: prefers audio + large fonts</li>
               <li>Best window: 9:30–11:00 AM</li>
@@ -478,111 +473,4 @@
           <div class="feature-label">Shift</div>
           <div class="feature-title">AI that shapes itself to you</div>
           <p class="feature-text">
-            Instead of telling neurodivergent learners to “try harder,” Cognify rewrites how content is chunked, timed, voiced, and displayed based on how their brain actually works.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- HOW IT WORKS -->
-    <section id="how-it-works" class="section">
-      <div class="section-label">Inside the system</div>
-      <div class="section-title">Four adaptive layers for real learners, not ideal ones.</div>
-      <p class="section-subtitle">
-        Under the hood, Cognify combines attention signals, interaction patterns, and self‑reported data to continuously tune the experience: what you see, how long you see it, and when you get to rest.
-      </p>
-
-      <div class="columns-3">
-        <div class="feature-card">
-          <div class="feature-label">Layer 01</div>
-          <div class="feature-title">Cognitive load controller</div>
-          <p class="feature-text">
-            Tracks micro‑signals like rapid tab‑switching, slowed responses, and error spikes to estimate current load, then shrinks, pauses, or reorders tasks before burnout hits.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-label">Layer 02</div>
-          <div class="feature-title">ADHD‑aware pacing</div>
-          <p class="feature-text">
-            Uses short timers, visible progress bars, and micro‑deadlines instead of long, vague assignments. Sessions auto‑split into sprints with built‑in breaks and rewards.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-label">Layer 03</div>
-          <div class="feature-title">Dyslexia‑friendly reading</div>
-          <p class="feature-text">
-            Toggles to high‑contrast themes, larger letterspacing, and text‑to‑speech by default for dyslexic profiles, transforming dense paragraphs into guided, multimodal chunks.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- LEARNER PROFILES -->
-    <section id="profiles" class="section">
-      <div class="section-label">Learner profiles</div>
-      <div class="section-title">One engine, many brains.</div>
-      <p class="section-subtitle">
-        Every learner builds a profile over time. Cognify doesn’t label you; it listens and adapts, so your “ideal way to learn” becomes the default, not the exception.
-      </p>
-
-      <div class="columns-3">
-        <div class="feature-card">
-          <div class="feature-label">Profile A</div>
-          <div class="feature-title">ADHD sprint learner</div>
-          <p class="feature-text">
-            Short, high‑focus bursts with strong visual cues. Tasks arrive as checklists, not essays. The system auto‑adds timers, breaks, and micro‑rewards to keep momentum.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-label">Profile B</div>
-          <div class="feature-title">Dyslexic audio‑first learner</div>
-          <p class="feature-text">
-            Lessons start in audio or video, with optional text overlays. When text appears, it is spacious, high‑contrast, and always paired with narration and highlight tracking.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-label">Profile C</div>
-          <div class="feature-title">Slow‑pace deep thinker</div>
-          <p class="feature-text">
-            The engine lengthens deadlines, reduces notifications, and turns fast quizzes into reflective prompts, matching the pace of learners who need extra time to process.
-          </p>
-        </div>
-      </div>
-    </section>
-    <footer>
-      <div>Built for neurodivergent minds first, not as an afterthought.</div>
-      <div>Concept draft · Ashaz Ali · Cognify Lab</div>
-    </footer>
-  </div>
-  <script>
-  async function startAdaptiveSession(profileId = "adhd_sprint") {
-    const res = await fetch("http://localhost:5000/api/session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ profile_id: profileId })
-    });
-    const data = await res.json();
-    alert("Adaptive session started for: " + data.profile_label);
-  }
-
-  async function sendSignals() {
-    const res = await fetch("http://localhost:5000/api/adapt", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        focus_drops: 3,
-        tab_switches: 5,
-        error_rate: 0.2,
-        minutes_in_session: 18
-      })
-    });
-    const data = await res.json();
-    alert("Load " + data.load_level + " (" + data.load_score + ") – " + data.suggestions[0]);
-  }
-</script>
-</body>
-</html>
+            Instead of telling neurodivergent learners to “try harder,” Cognify rewrites how content is chunked, timed, 
