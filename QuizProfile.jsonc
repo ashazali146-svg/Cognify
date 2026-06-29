@@ -1,0 +1,121 @@
+ "name": "QuizProfile",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "display_name": {
+      "type": "string"
+    },
+    "level": {
+      "type": "number",
+      "default": 1
+    },
+    "xp": {
+      "type": "number",
+      "default": 0
+    },
+    "xp_to_next_level": {
+      "type": "number",
+      "default": 100
+    },
+    "total_quizzes_completed": {
+      "type": "number",
+      "default": 0
+    },
+    "total_correct_answers": {
+      "type": "number",
+      "default": 0
+    },
+    "total_questions_answered": {
+      "type": "number",
+      "default": 0
+    },
+    "current_streak": {
+      "type": "number",
+      "default": 0
+    },
+    "best_streak": {
+      "type": "number",
+      "default": 0
+    },
+    "difficulty_level": {
+      "type": "string",
+      "enum": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "default": "beginner"
+    },
+    "preferred_pace": {
+      "type": "string",
+      "enum": [
+        "relaxed",
+        "moderate",
+        "fast"
+      ],
+      "default": "relaxed"
+    },
+    "cognitive_mode": {
+      "type": "string",
+      "enum": [
+        "adhd",
+        "dyslexia",
+        "cognitive_lite",
+        "custom"
+      ],
+      "default": "custom"
+    },
+    "accessibility_preferences": {
+      "type": "object",
+      "properties": {
+        "dyslexia_font": {
+          "type": "boolean",
+          "default": true
+        },
+        "high_contrast": {
+          "type": "boolean",
+          "default": false
+        },
+        "reduced_animations": {
+          "type": "boolean",
+          "default": false
+        },
+        "large_text": {
+          "type": "boolean",
+          "default": true
+        },
+        "show_timer": {
+          "type": "boolean",
+          "default": false
+        },
+        "questions_per_session": {
+          "type": "number",
+          "default": 8
+        },
+        "show_progress_dots": {
+          "type": "boolean",
+          "default": true
+        },
+        "celebration_on_correct": {
+          "type": "boolean",
+          "default": true
+        },
+        "break_reminder": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "badges": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "user_id"
+  ]
+}
