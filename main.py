@@ -162,3 +162,5 @@ def adapt_session():
 if __name__ == "__main__":
     # Run on localhost:5000
     app.run(host="0.0.0.0", port=5000, debug=True)
+    pip install flask flask-cors
+python app.py
