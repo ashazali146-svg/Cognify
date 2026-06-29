@@ -1,3 +1,3 @@
 # Cognify #
 ## Team-2 ##
-Names:Ashaz Ali Sulaiman , Arjun Arun , Mohammed Mehafin 
+Contributers: Ashaz Ali Sulaiman , Arjun Arun , Mohammed Mehafin 
