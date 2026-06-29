@@ -350,6 +350,58 @@
       color: var(--accent);
       text-decoration: none;
     }
+
+    /* Session page styles */
+    .session {
+      margin-top: 40px;
+      display: none; /* hidden by default */
+    }
+
+    .session-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .session-grid {
+      display: grid;
+      grid-template-columns: 2fr 1.5fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 840px) {
+      .session-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .session-card {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 16px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      font-size: 0.86rem;
+    }
+
+    .session-steps {
+      list-style: decimal;
+      padding-left: 20px;
+      color: var(--text-soft);
+    }
+
+    .badge {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      font-size: 0.76rem;
+      color: var(--text-soft);
+    }
+
+    .badge.accent {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
   </style>
 </head>
 <body>
@@ -368,8 +420,8 @@
       </nav>
     </header>
 
-    <!-- HERO -->
-    <section class="hero">
+    <!-- HERO (landing page) -->
+    <section class="hero" id="hero-section">
       <div>
         <h1 class="hero-title">
           Standard education software assumes a <span class="hero-highlight">standard brain</span>.
@@ -387,17 +439,17 @@
         </div>
 
         <div class="hero-actions">
-          <button class="btn-primary" onclick="startAdaptiveSession('adhd_sprint')">
+          <button class="btn-primary" onclick="openSession('adhd_sprint')">
             Start an adaptive session
             <span>→</span>
           </button>
-          <button class="btn-secondary" onclick="sendSignals()">
+          <button class="btn-secondary" onclick="openSession('dyslexic_audio')">
             Watch 2‑minute concept demo <span>beta</span>
           </button>
         </div>
       </div>
 
-      <!-- HERO VISUAL / MOCK PANEL -->
+      <!-- HERO VISUAL -->
       <div class="hero-visual">
         <div class="hero-visual-header">
           <div class="pill">Learner: Neurodivergent mode</div>
@@ -438,7 +490,57 @@
       </div>
     </section>
 
-    <!-- VISION -->
+    <!-- SESSION PAGE (shown after clicking button) -->
+    <section class="session" id="session-section">
+      <div class="session-header">
+        <div>
+          <div class="section-label">Adaptive session</div>
+          <div class="section-title" id="session-title">
+            ADHD sprint learner · Focus sprint
+          </div>
+          <p class="section-subtitle" id="session-subtitle">
+            Cognify has generated an adaptive session based on your neurodivergent profile,
+            pacing your tasks and breaks to keep cognitive load in the safe zone.
+          </p>
+        </div>
+        <div>
+          <span class="badge accent" id="session-badge">Session length: 25 min · Break: 5 min</span>
+        </div>
+      </div>
+
+      <div class="session-grid">
+        <div class="session-card">
+          <h3>Session steps</h3>
+          <ol class="session-steps" id="session-steps">
+            <li>Warm‑up: 2–3 very easy tasks.</li>
+            <li>Core focus sprint with short timers.</li>
+            <li>Built‑in micro‑break with breathing / stretch.</li>
+            <li>Reflection: quick recap before closing the session.</li>
+          </ol>
+        </div>
+
+        <div class="session-card">
+          <h3>Live adaptation (simulated)</h3>
+          <p style="color: var(--text-soft); margin-bottom: 10px;" id="session-adapt-text">
+            Cognitive load is currently medium. Instructions are shortened, and you can trigger a 2‑minute pause at any time.
+          </p>
+          <button class="btn-secondary" onclick="simulateLoadChange()">
+            Simulate cognitive‑load change
+          </button>
+          <p style="font-size: 0.8rem; color: var(--text-soft); margin-top: 10px;">
+            Each click adjusts the load bar and adaptation summary to show how the AI would react to changing focus or errors.
+          </p>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <button class="btn-secondary" onclick="backToHero()">
+          ← Back to concept overview
+        </button>
+      </div>
+    </section>
+
+    <!-- OTHER SECTIONS (stay same) -->
     <section id="vision" class="section">
       <div class="section-label">Why this matters</div>
       <div class="section-title">Education was built for one brain type. Yours is different.</div>
@@ -480,7 +582,6 @@
       </div>
     </section>
 
-    <!-- LEARNER PROFILES -->
     <section id="profiles" class="section">
       <div class="section-label">Learner profiles</div>
       <div class="section-title">One engine, many brains.</div>
@@ -521,50 +622,68 @@
     </footer>
   </div>
 
-  <!-- Simulated “backend” logic in pure JS -->
+  <!-- Page switching + simulated adaptation -->
   <script>
-    const profiles = {
+    const profileConfigs = {
       adhd_sprint: {
-        label: "ADHD sprint learner",
-        duration_minutes: 25,
-        break_minutes: 5,
-        task_style: "checklist, short sprints, strong visual cues",
-        timers_enabled: true,
-        micro_rewards: true
+        title: "ADHD sprint learner · Focus sprint",
+        subtitle: "Cognify has generated an adaptive session with short sprints, visible timers, and micro‑breaks to keep cognitive load stable for ADHD learners.",
+        badge: "Session length: 25 min · Break: 5 min",
+        steps: [
+          "Warm‑up: 2–3 very easy checklist tasks.",
+          "Core focus sprint with 5‑minute timers.",
+          "Micro‑break: breathing / stretch and water.",
+          "Reflection: quick recap before closing the session."
+        ]
       },
       dyslexic_audio: {
-        label: "Dyslexic audio-first learner",
-        duration_minutes: 30,
-        break_minutes: 10,
-        task_style: "audio-first, high-contrast text, guided reading",
-        timers_enabled: false,
-        micro_rewards: true
+        title: "Dyslexic audio‑first learner · Guided reading",
+        subtitle: "Cognify has generated an adaptive session that starts in audio, uses high‑contrast text, and guides reading in small chunks for dyslexic learners.",
+        badge: "Session length: 30 min · Break: 10 min",
+        steps: [
+          "Audio overview of the topic.",
+          "High‑contrast text with narration on key paragraphs.",
+          "Guided reading with highlight tracking.",
+          "Recap using audio + visual summary."
+        ]
       }
     };
 
-    function startAdaptiveSession(profileId = "adhd_sprint") {
-      const profile = profiles[profileId] || profiles.adhd_sprint;
+    function openSession(profileId) {
+      const config = profileConfigs[profileId] || profileConfigs.adhd_sprint;
 
-      document.getElementById("hero-status").textContent =
-        `Session started for ${profile.label} – ` +
-        `${profile.duration_minutes} min with a ${profile.break_minutes} min break.`;
+      // Fill session text
+      document.getElementById("session-title").textContent = config.title;
+      document.getElementById("session-subtitle").textContent = config.subtitle;
+      document.getElementById("session-badge").textContent = config.badge;
 
-      document.getElementById("profile-snapshot").innerHTML = `
-        <li>Profile: ${profile.label}</li>
-        <li>Task style: ${profile.task_style}</li>
-        <li>Timers enabled: ${profile.timers_enabled ? "yes" : "no"}</li>
-        <li>Micro-rewards: ${profile.micro_rewards ? "yes" : "no"}</li>
-      `;
+      const stepsList = document.getElementById("session-steps");
+      stepsList.innerHTML = "";
+      config.steps.forEach(step => {
+        const li = document.createElement("li");
+        li.textContent = step;
+        stepsList.appendChild(li);
+      });
 
-      alert("Adaptive session started for: " + profile.label);
+      // Show session page, hide hero
+      document.getElementById("hero-section").style.display = "none";
+      document.getElementById("session-section").style.display = "block";
+
+      // Scroll to top of page so the session is visible
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    function sendSignals() {
-      // Simulate different cognitive load levels each click
+    function backToHero() {
+      document.getElementById("session-section").style.display = "none";
+      document.getElementById("hero-section").style.display = "grid";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function simulateLoadChange() {
       const loads = [
-        { score: 20, level: "low", suggestion: "Safe to introduce a new concept." },
-        { score: 55, level: "medium", suggestion: "Keep difficulty but shorten instructions." },
-        { score: 85, level: "high", suggestion: "Pause new concepts; switch to review tasks." }
+        { score: 20, level: "low", text: "Load is low. Safe to introduce a new concept or combine two micro‑tasks." },
+        { score: 55, level: "medium", text: "Load is medium. Keep tasks short and add an optional 2‑minute pause." },
+        { score: 85, level: "high", text: "Load is high. Pause new content and switch to review or visual cues only." }
       ];
 
       const choice = loads[Math.floor(Math.random() * loads.length)];
@@ -575,13 +694,7 @@
       const chipLoad = document.getElementById("chip-load");
       chipLoad.textContent = `Cognitive load: ${choice.level} (${choice.score})`;
 
-      document.getElementById("hero-status").textContent = choice.suggestion;
-
-      alert(
-        "Cognitive load: " + choice.level +
-        " (" + choice.score + ")\n" +
-        "Suggestion: " + choice.suggestion
-      );
+      document.getElementById("session-adapt-text").textContent = choice.text;
     }
   </script>
 </body>
